@@ -1,0 +1,28 @@
+<launch>
+
+  <group ns="ema">
+    <!-- load config files-->
+    <!--rosparam command="load" file="$(find ema_fes_cycling)/config/control.yaml" ns="config" /-->
+    <!--rosparam command="load" file="$(find ema_fes_cycling)/config/trike.yaml" ns="config" /-->
+    <!--rosparam command="load" file="$(find ema_fes_cycling)/config/control.yaml" ns="control" /-->
+    <rosparam command="load" file="$(find yostlabs_3space_imu)/config/imu.yaml" ns="imu" />
+    <rosparam command="load" file="$(find hasomed_rehastim_stimulator)/config/stim_gait.yaml" ns="stimulator"/>
+	
+    <!-- launch nodes -->
+    <node name="client" pkg="ema_controllers" type="client_node.py" output="screen" respawn="true" respawn_delay="5"/>
+    <node name="imu" pkg="yostlabs_3space_imu" type="imu_node.py" output="log" respawn="true" respawn_delay="5"/>
+    <node name="stimulator" pkg="hasomed_rehastim_stimulator" type="stimulator_node.py" output="log" respawn="true" respawn_delay="5"/>
+    <node name="control" pkg="ema_controllers" type="control_knee.py" output="screen" respawn="true" respawn_delay="5"/>
+    <node name="reference" pkg="ema_controllers" type="reference_knee.py" output="screen" respawn="true" respawn_delay="5"/>
+    <node name="lis" pkg="ema_controllers" type="listener.py" output="screen" respawn="true" respawn_delay="5"/>
+    <node name="server" pkg="ema_controllers" type="server_node.py" output="screen" respawn="true" respawn_delay="5"/>
+    <node name="curve" pkg="ema_controllers" type="curve_node.py" output="screen" respawn="true" respawn_delay="5"/>
+
+  </group>
+	
+  <!-- launch utils -->
+  <!-- <node name="rviz" pkg="rviz" type="rviz" args="-d $(find ema_fes_cycling)/config/rviz/imu.rviz" output="log" respawn="true" respawn_delay="5"/>
+  <node name="rqt_graph" pkg="rqt_graph" type="rqt_graph" output="log" respawn="true" respawn_delay="5"/>
+  <node name="rqt_plot" pkg="rqt_plot" type="rqt_plot" output="log" respawn="true" respawn_delay="5"/> -->
+
+</launch>
